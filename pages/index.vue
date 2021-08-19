@@ -2,6 +2,7 @@
   <div class="l-container">
     <Navbar />
     <Main />
+    <DesignByCard />
   </div>
 </template>
 
@@ -16,6 +17,7 @@ export default {}
 body {
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 :active, :hover, :focus {
   outline: 0;

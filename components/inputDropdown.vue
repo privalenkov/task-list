@@ -1,7 +1,7 @@
 <template>
   <div class="c-drowdown-input">
     <div class="c-drowdown-input__l-container">
-      <div class="c-drowdown-input__select icons">
+      <div class="c-drowdown-input__select icons" @click="isOpen = true">
         <div
           ref="input"
           class="input"
@@ -63,19 +63,10 @@ export default {
     display: flex;
     align-items: center;
     &::after {
-      background-position: -10px -10px;
+      background-position: -1px -1px;
       width: 20px;
-      height: 20px;
-    }
-    &.icons::after {
-      cursor: pointer;
-      display: inline-block;
-      overflow: hidden;
-      background: #bf8eff;
-      background-image: url('~static/icons/icons.svg');
-      background-repeat: no-repeat;
-      content: '';
       margin-right: 5px;
+      height: 20px;
     }
     .input {
       cursor: pointer;
@@ -87,6 +78,10 @@ export default {
       padding: 0 0 0 10px;
       display: flex;
       align-items: center;
+      &::selection, span::selection {
+        background: #946dff;
+        color: #fff;
+      }
     }
   }
   &__l-grid {
@@ -99,6 +94,7 @@ export default {
     padding-left: 0;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
     margin: 5px 0 0 0;
+    user-select: none;
 
     li {
       padding: 8px 0 8px 20px;

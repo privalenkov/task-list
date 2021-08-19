@@ -1,5 +1,5 @@
 <template>
-  <div class="c-task">
+  <div id="draggable" class="c-task">
     <div class="c-task__title">
       <span class="c-task__icon">{{ task.icon }}</span>
       <span>{{ task.title }}</span>
@@ -31,13 +31,21 @@ export default {
   box-shadow: 0 5px 20px -2px #c5d7e9;
   width: 280px;
   border-radius: 4px;
-  transition: .2s;
+  transition: .1s;
   cursor: pointer;
-  display: flex;
+  display: grid;
   align-items: center;
   justify-content: space-between;
-  &.start-drag {
+  grid-template-columns: 80% auto;
+  column-gap: 10px;
+  &.drag {
     position: absolute;
+  }
+  &.start-drag {
+    height: 0;
+    padding: 0;
+    transform: scale(0.8);
+    opacity: 0;
   }
   &:hover {
     background: #fafdff;
@@ -46,6 +54,8 @@ export default {
     opacity: 1;
   }
   &__title {
+    word-break: break-word;
+    pointer-events: none;
     &::selection, span::selection {
       background: #946dff;
       color: #fff;

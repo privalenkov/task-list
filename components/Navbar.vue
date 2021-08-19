@@ -5,6 +5,11 @@
       <nav class="c-header__l-grid">
         <ul>
           <li>
+            <div class="c-header__notification icons">
+              <span class="c-header__notif-circle">2</span>
+            </div>
+          </li>
+          <li>
             <div class="c-header__profile-image">
               <a href="">
                 <img src="/img/profile.jpg">
@@ -18,9 +23,10 @@
       <Dropdown :options="dropdownData" />
       <nav class="c-header__l-grid">
         <ul>
-          <li>point1</li>
-          <li>point2</li>
-          <li>point3</li>
+          <li>
+            <OnlineBar />
+          </li>
+          <li><div class="c-header__btn-more icons" /></li>
         </ul>
       </nav>
     </div>
@@ -28,13 +34,14 @@
 </template>
 
 <script>
-import Dropdown from '@/components/inputDropdown'
+import Dropdown from '@/components/InputDropdown'
+import OnlineBar from '@/components/OnlineBar'
 import Logo from '@/components/Logo'
 
 export default {
   name: 'Navbar',
   components: {
-    Dropdown, Logo
+    Dropdown, OnlineBar, Logo
   },
   data: () => ({
     dropdownData: [
@@ -48,7 +55,33 @@ export default {
 
 <style lang="scss" scoped>
 .c-header {
-  z-index: 9999;
+  z-index: 9996;
+  &__notification {
+    position: relative;
+    &::after  {
+      background-position: -49px 2px;
+      width: 20px;
+      height: 25px;
+    }
+  }
+  &__notif-circle {
+    position: absolute;
+    color: #fff;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-size: 8px;
+    width: 14px;
+    height: 14px;
+    right: -14px;
+    top: -3px;
+    display: flex;
+    border-radius: 3px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: #F06845;
+    user-select: none;
+  }
   &__profile-image {
     width: 37px;
     overflow: hidden;
@@ -59,6 +92,19 @@ export default {
     img {
       width: 100%;
       height: 100%;
+    }
+  }
+  &__btn-more {
+    &:hover {
+      background: #f7f7f7;
+      transition: background .2s;
+      border-radius: 4px;
+    }
+    &::after  {
+      background-position: -68px 2px;
+      width: 30px;
+      height: 30px;
+      display: flex;
     }
   }
   &__l-cap, &__l-menu {
@@ -81,9 +127,12 @@ export default {
   }
 
   &__l-grid {
+    height: 100%;
     ul {
+      height: 100%;
       display: flex;
-      column-gap: 20px;
+      align-items: center;
+      column-gap: 30px;
       margin: 0;
       list-style: none;
     }
