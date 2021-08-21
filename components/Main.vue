@@ -68,7 +68,7 @@ main {
   cursor: pointer;
   display: inline-block;
   overflow: hidden;
-  background-image: url('~static/icons/icons-spritesheet.svg');
+  background-image: url('/icons/icons-spritesheet.svg');
   background-repeat: no-repeat;
   content: '';
 }

@@ -8,7 +8,7 @@
         class="c-table-task__column"
       >
         <div class="c-table-task__l-container">
-          <div class="c-table-task__column-title" @mouseover="overHandler(index)" @mouseleave="leaveHandler">
+          <div class="c-table-task__column-title" @mousedown="mouseDownColumn($event, column)" @mouseover="overHandler(index)" @mouseleave="leaveHandler">
             <span v-if="currentColumnId === index && currentColumnTitle">+ New Task</span>
             <div v-else>
               {{ column.title }} <span class="c-table-task__task-count">({{ column.tasks.length }})</span>
@@ -24,7 +24,7 @@
             id="droppable-task"
             :key="task.id"
             class="c-table-task__task"
-            @mousedown="mouseDown($event, column, task)"
+            @mousedown="mouseDownTask($event, column, task)"
             @mouseup="mouseDrop($event, column, task)"
           >
             <Task :task="task" />
@@ -197,7 +197,6 @@ export default {
       const $title = document.querySelectorAll('.c-table-task__l-container')
       const $addcolumn = document.querySelector('#add-column')
       const arr = []
-      console.log($title)
       if (this.isFixed) {
         arr.forEach.call($title, function (div) {
           div.style.setProperty('position', 'sticky')
@@ -207,10 +206,10 @@ export default {
         $addcolumn.style.setProperty('top', '-30px')
       } else {
         arr.forEach.call($title, function (div) {
-          div.style.setProperty('position', 'relative')
+          div.style.setProperty('position', 'none')
           div.style.setProperty('top', 'initial')
         })
-        $addcolumn.style.setProperty('position', 'relative')
+        $addcolumn.style.setProperty('position', 'none')
         $addcolumn.style.setProperty('top', 'initial')
       }
     },
@@ -224,7 +223,16 @@ export default {
     leaveHandler () {
       this.currentColumnTitle = false
     },
-    mouseDown (e, column, task) {
+    mouseDownColumn (e, column) {
+      const top = e.target.getBoundingClientRect().top
+      const left = e.target.getBoundingClientRect().left
+      const shiftX = e.clientX - left
+      const shiftY = e.clientY - top
+      this.shiftCoords = { shiftX, shiftY }
+      e.target.classList.add('drag')
+      this.moveAt(e.target, e.pageX)
+    },
+    mouseDownTask (e, column, task) {
       if (e.target.id === 'draggable') {
         this.isDrop = false
         this.currentColumn = column
@@ -330,10 +338,14 @@ export default {
         this.isDrag = false
       }
     },
-    moveAt (target, pageX, pageY) {
+    moveAt (target, pageX, pageY = null) {
       const trnslX = pageX - this.shiftCoords.shiftX
-      const trnslY = pageY - this.shiftCoords.shiftY
-      this.targetTranslate = { x: trnslX, y: trnslY }
+      if (pageY) {
+        const trnslY = pageY - this.shiftCoords.shiftY
+        this.targetTranslate = { x: trnslX, y: trnslY }
+        return
+      }
+      this.targetTranslate = { x: trnslX }
     },
     onDrop () {
       // const itemID = e.dataTransfer.getData('itemID')
@@ -449,6 +461,9 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    &.drag {
+      position: absolute;
+    }
   }
   &__l-container {
     width: 280px;
@@ -504,12 +519,11 @@ export default {
 <style lang="scss">
 .over {
   height: 5px;
-  background: #a6daef;
+  background: #d8d3eb;
   margin: 10px 10px 10px 10px;
   border-radius: 100px;
   transition: all 1s;
   animation: over-show .4s forwards;
-  box-shadow: 0 0 10px 4px #c3e2ee;
 
   @keyframes over-show {
     0% {

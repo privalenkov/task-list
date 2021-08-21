@@ -12,7 +12,7 @@
           <li>
             <div class="c-header__profile-image">
               <a href="">
-                <img src="/img/profile.jpg">
+                <img src="img/profile.jpg">
               </a>
             </div>
           </li>
